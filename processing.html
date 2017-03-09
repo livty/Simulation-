@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>For Jackie</title>
+    <script src="processing.js"></script>
+    <link rel="stylesheet" href="processing.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.js"></script>
+    <script type="text/processing" data-processing-target="mycanvas">
+Ball b;
+PVector center;
+float angle;
+float radius;
+
+void setup() {
+  
+  size(600, 600);
+  center = new PVector(width/2, height/2);
+
+
+
+  //initial location of the object
+  PVector point = new PVector((width/3), (height/3));
+  PVector v = new PVector((width/2), (height/2));
+
+  //find the angle between the earth and a moon
+  float deltaX = center.x - point.x;
+  float deltaY = center.y - point.y;
+  angle = atan2(deltaX, deltaY);
+
+  //find the radius of the circle
+  radius = dist(center.x, center.y, point.x, point.y);
+
+  ellipseMode(RADIUS);
+
+
+}
+
+void draw() {
+
+
+  background(20,30,48) ;
+
+  //draw the center point
+
+  ellipse(center.x, center.y, 50, 50);
+
+  //find the point based on the angle
+  float x = center.x + cos(angle)*radius;
+  float y = center.y + sin(angle)*radius;
+
+  //draw the traveling point
+  ellipse(x, y, 20, 20);
+
+
+  angle += PI/500;
+
+  if (b== null){
+    b = new Ball(50,50);
+  }
+  b.update();
+  b.draw();
+
+}
+class Ball{
+  int x,y;
+  int yV;
+  int gravity;
+
+  Ball(int initX,int initY){
+    x = initX;
+    y = initY;
+    yV = 0.5;
+    gravity = 0.01;
+  }
+  void update(){
+    yV += gravity;
+    y += yV;
+  }
+  void draw(){
+    ellipse(x,y,5,5);
+
+  }
+}
+
+    </script>
+
+  </head>
+  <body>
+<canvas id="mycanvas"></canvas>
+  </body>
+</html>
